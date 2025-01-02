@@ -9,6 +9,9 @@ jobs:
   publish-docker-hub:
      name: Publish image to Docker Hub
      runs-on: ubuntu-latest
+     env:
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      PORT: ${{ vars.PORT }}
      steps:
       - uses: actions/checkout@v4
 
@@ -22,8 +25,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           build-args: |
-            MONGODB_URI=${{ secrets.MONGODB_URI }}
-            PORT=${{ vars.PORT }}
+            MONGODB_URI=$MONGODB_URI
+            PORT=$PORT
           push: true
           tags: yutharsans/simple-phone-book:latest
-
