@@ -7,24 +7,23 @@ on:
 
 jobs:
   publish-docker-hub:
-    name: Publish image to Docker Hub
-    runs-on: ubuntu-latest
-    env:
-      MONGODB_URI: ${{ secrets.MONGODB_URI }}
-      PORT: ${{ vars.PORT }}
-    steps:
+     name: Publish image to Docker Hub
+     runs-on: ubuntu-latest
+     steps:
+      - uses: actions/checkout@v4
 
-    - uses: actions/checkout@v4
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Login to Docker Hub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ vars.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-    - name: Build and push
-      uses: docker/build-push-action@v6
-      with:
-        push: true
-        tags: yutharsans/simple-phone-book
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          build-args: |
+            MONGODB_URI=${{ secrets.MONGODB_URI }}
+            PORT=${{ vars.PORT }}
+          push: true
+          tags: yutharsans/simple-phone-book:latest
 
