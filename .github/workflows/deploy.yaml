@@ -27,8 +27,5 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          build-args: |
-            MONGODB_URI=$MONGODB_URI
-            PORT=$PORT
           push: true
           tags: yutharsans/simple-phone-book:latest
